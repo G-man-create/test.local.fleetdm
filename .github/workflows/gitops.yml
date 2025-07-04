@@ -19,10 +19,6 @@ jobs:
           tar -xzf fleetctl_v4.69.0_linux_amd64.tar.gz
           chmod +x fleetctl_v4.69.0_linux_amd64/fleetctl
           sudo mv fleetctl_v4.69.0_linux_amd64/fleetctl /usr/local/bin/fleetctl
-          fleetctl version
-
-
-
       - name: Run GitOps apply
         env:
           FLEET_URL: ${{ secrets.FLEET_URL }}
