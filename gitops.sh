@@ -4,6 +4,7 @@ set -e
 echo "Authenticating with Fleet..."
 
 fleetctl config set --address "$FLEET_URL"
+fleetctl config set --insecure true
 fleetctl config set --token "$FLEET_API_TOKEN"
 
 echo "Applying default.yml..."
