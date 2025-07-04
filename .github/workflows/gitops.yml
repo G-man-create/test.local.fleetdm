@@ -15,7 +15,7 @@ jobs:
 
       - name: Install fleetctl
         run: |
-          curl -LO https://github.com/fleetdm/fleet/releases/download/fleet-v4.69.0/fleetctl-linux.tar.gz
+          curl -LO https://github.com/fleetdm/fleet/releases/download/fleet-v4.69.0/fleetctl_v4.69.0_linux_amd64.tar.gz
           tar -xzf fleetctl-linux.tar.gz
           sudo mv fleetctl /usr/local/bin/
           fleetctl version
