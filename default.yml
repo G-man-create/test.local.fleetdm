@@ -15,6 +15,9 @@ agent_options:
   overrides:
 controls:
 labels:
+- ./lib/labels/is-windows.yml
+- ./lib/labels/is-linux.yml
+- ./lib/labels/is-macos.yml
 org_settings:
   features:
     enable_host_users: true
@@ -85,6 +88,7 @@ org_settings:
       host_batch_size: 0
   yara_rules:
 policies:
+- ./lib/policies/osquery_running.yml
 - calendar_events_enabled: false
   conditional_access_enabled: false
   critical: false

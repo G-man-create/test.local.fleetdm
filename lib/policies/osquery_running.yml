@@ -1,0 +1,5 @@
+name: Is osquery running
+description: Checks if osqueryd is running
+query: SELECT 1 FROM processes WHERE name = 'osqueryd';
+resolution: Make sure osquery is installed and running.
+platform: all
