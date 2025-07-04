@@ -1,0 +1,29 @@
+name: Fleet GitOps Apply
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install fleetctl
+        run: |
+          curl -LO https://github.com/fleetdm/fleet/releases/download/fleet-v4.69.0/fleetctl-linux.tar.gz
+          tar -xzf fleetctl-linux.tar.gz
+          sudo mv fleetctl /usr/local/bin/
+          fleetctl version
+
+      - name: Run GitOps apply
+        env:
+          FLEET_URL: ${{ secrets.FLEET_URL }}
+          FLEET_API_TOKEN: ${{ secrets.FLEET_API_TOKEN }}
+        run: |
+          chmod +x ./gitops.sh
+          ./gitops.sh
