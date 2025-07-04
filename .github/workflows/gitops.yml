@@ -17,9 +17,10 @@ jobs:
         run: |
           curl -LO https://github.com/fleetdm/fleet/releases/download/fleet-v4.69.0/fleetctl_v4.69.0_linux_amd64.tar.gz
           tar -xzf fleetctl_v4.69.0_linux_amd64.tar.gz
-          chmod +x fleetctl
-          sudo mv fleetctl /usr/local/bin/
+          chmod +x fleetctl_v4.69.0_linux_amd64/fleetctl
+          sudo mv fleetctl_v4.69.0_linux_amd64/fleetctl /usr/local/bin/fleetctl
           fleetctl version
+
 
 
       - name: Run GitOps apply
