@@ -1,0 +1,8 @@
+kind: policy
+spec:
+  name: Check VPN Win
+  platform: windows
+  query: |
+    SELECT interface FROM interface_details WHERE interface LIKE '%vpn%' AND interface NOT LIKE '%Tailscale%';
+  critical: false
+  description: ""
