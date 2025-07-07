@@ -14,6 +14,17 @@ spec:
         logger_tls_endpoint: /api/osquery/log
         logger_tls_period: 10
         pack_delimiter: /
+  labels:
+    - ./lib/labels/is-windows.yml
+    - ./lib/labels/is-linux.yml
+    - ./lib/labels/is-macos.yml
+  policies:
+  - name: Check VPN Win
+    platform: windows
+    query: |
+      SELECT interface FROM interface_details WHERE interface LIKE '%vpn%' AND interface NOT LIKE '%Tailscale%';
+    description: Проверка VPN интерфейсов
+    resolution: Убедитесь, что используется корректный VPN клиент
   org_info:
     org_name: Fleet
     org_logo_url: https://fleetdm.com/logo.png
