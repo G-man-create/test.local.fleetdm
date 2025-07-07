@@ -1,159 +1,43 @@
-agent_options:
-  config:
-    decorators:
-      load:
-      - SELECT uuid AS host_uuid FROM system_info;
-      - SELECT hostname AS hostname FROM system_info;
-    options:
-      disable_distributed: false
-      distributed_interval: 10
-      distributed_plugin: tls
-      distributed_tls_max_attempts: 3
-      logger_tls_endpoint: /api/osquery/log
-      logger_tls_period: 10
-      pack_delimiter: /
-  overrides:
-controls:
-labels:
-- ./lib/labels/is-windows.yml
-- ./lib/labels/is-linux.yml
-- ./lib/labels/is-macos.yml
-org_settings:
-  features:
-    enable_host_users: true
-    enable_software_inventory: true
+kind: config
+spec:
+  agent_options:
+    config:
+      decorators:
+        load:
+          - SELECT uuid AS host_uuid FROM system_info;
+          - SELECT hostname AS hostname FROM system_info;
+      options:
+        disable_distributed: false
+        distributed_interval: 10
+        distributed_plugin: tls
+        distributed_tls_max_attempts: 3
+        logger_tls_endpoint: /api/osquery/log
+        logger_tls_period: 10
+        pack_delimiter: /
+  org_info:
+    org_name: Fleet
+    org_logo_url: https://fleetdm.com/logo.png
+    contact_url: https://fleetdm.com/company/contact
   fleet_desktop:
     transparency_url: https://fleetdm.com/transparency
-  host_expiry_settings:
-    host_expiry_enabled: false
-    host_expiry_window: 0
-  integrations:
-    conditional_access_enabled:
-    custom_scep_proxy:
-    digicert:
-    google_calendar:
-    jira:
-    ndes_scep_proxy:
-    zendesk:
-  mdm:
-    apple_server_url:
-    end_user_authentication:
-      entity_id:
-      idp_name:
-      issuer_uri:
-      metadata:
-      metadata_url:
-  org_info:
-    contact_url: https://fleetdm.com/company/contact
-    org_logo_url: https://fleetdm.com/logo.png
-    org_logo_url_light_background:
-    org_name: Fleet
-  secrets:
-  - secret: # TODO: Add your enroll secrets here
   server_settings:
+    server_url: https://fleetdm.example.com
+    enable_analytics: true
     ai_features_disabled: true
     deferred_save_host: false
-    enable_analytics: true
     live_query_disabled: false
     query_report_cap: 0
     query_reports_disabled: false
     scripts_disabled: false
-    server_url: https://fleetdm.example.com
-  sso_settings:
-    enable_sso: false
-    enable_sso_idp_login: false
-    entity_id:
-    idp_image_url:
-    idp_name:
-    metadata:
-    metadata_url:
+  host_expiry_settings:
+    host_expiry_enabled: false
+    host_expiry_window: 0
+  features:
+    enable_software_inventory: true
+    enable_host_users: true
   webhook_settings:
-    activities_webhook:
-      destination_url:
-      enable_activities_webhook: false
-    failing_policies_webhook:
-      destination_url:
-      enable_failing_policies_webhook: false
-      host_batch_size: 0
-      policy_ids:
-    host_status_webhook:
-      days_count: 0
-      destination_url:
-      enable_host_status_webhook: false
-      host_percentage: 0
     interval: 24h0m0s
     vulnerabilities_webhook:
-      destination_url: https:/tese.fleetdm.com
       enable_vulnerabilities_webhook: true
+      destination_url: https:/tese.fleetdm.com
       host_batch_size: 0
-  yara_rules:
-policies:
-- ./lib/policies/osquery_running.yml
-- calendar_events_enabled: false
-  conditional_access_enabled: false
-  critical: false
-  description:
-  name: Antivirus
-  platform: darwin,windows,linux,chrome
-  query: SELECT 1 FROM osquery_info WHERE start_time > 1;
-  resolution:
-- calendar_events_enabled: false
-  conditional_access_enabled: false
-  critical: false
-  description: Checks if the device mounted at / is encrypted. There are many ways
-    to encrypt Linux systems. You may need to adapt this query, or submit an issue
-    in the Fleet repo.
-  name: Full disk encryption enabled (Linux) (All teams)
-  platform: linux
-  query: SELECT 1 FROM (SELECT encrypted, path FROM disk_encryption FULL OUTER JOIN
-    mounts ON mounts.device_alias = disk_encryption.name) WHERE encrypted = 1 AND
-    path = '/';
-  resolution: Ensure the image deployed to your Linux workstation includes full disk
-    encryption.
-- calendar_events_enabled: false
-  conditional_access_enabled: false
-  critical: false
-  description:
-  name: Check VPN Win
-  platform: windows
-  query: SELECT interface FROM interface_details WHERE interface LIKE '%vpn%' AND
-    interface NOT LIKE '%Tailscale%';
-  resolution:
-- calendar_events_enabled: false
-  conditional_access_enabled: false
-  critical: false
-  description:
-  name: Check VPN Linux
-  platform: linux
-  query: SELECT 1 FROM processes WHERE (name LIKE '%openvpn%' OR name LIKE '%wg-quick%')
-    AND name NOT LIKE '%Tailscale%';
-  resolution:
-- calendar_events_enabled: false
-  conditional_access_enabled: false
-  critical: false
-  description:
-  name: Check Antivirus Linux
-  platform: linux
-  query: |2-
-
-    SELECT 1 WHERE EXISTS (SELECT 1 FROM processes WHERE name LIKE '%klamav%' OR name LIKE '%kesl%');
-    SELECT 1 WHERE EXISTS (SELECT 1 FROM rpm_packages WHERE name LIKE '%kaspersky%') OR EXISTS (SELECT 1 FROM deb_packages WHERE name LIKE '%kaspersky%');
-  resolution:
-- calendar_events_enabled: false
-  conditional_access_enabled: false
-  critical: false
-  description:
-  name: Check Antivirus Win
-  platform: windows
-  query: SELECT 1 WHERE EXISTS (SELECT 1 FROM processes WHERE name LIKE '%kaspersky%'
-    OR name LIKE '%ksde%' OR name LIKE '%avp%');
-  resolution:
-- calendar_events_enabled: false
-  conditional_access_enabled: false
-  critical: false
-  description:
-  name: Check updates Win
-  platform: windows
-  query: SELECT 1 WHERE NOT EXISTS (SELECT 1 FROM windows_update_history);
-  resolution:
-queries:
