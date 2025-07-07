@@ -21,7 +21,7 @@ spec:
   fleet_desktop:
     transparency_url: https://fleetdm.com/transparency
   server_settings:
-    server_url: https://fleetdm.example.com
+    server_url: http://fleetdm.example.com
     enable_analytics: true
     ai_features_disabled: true
     deferred_save_host: false
