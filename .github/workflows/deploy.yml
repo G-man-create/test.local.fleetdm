@@ -1,0 +1,24 @@
+name: Deploy FleetDM
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Compose
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker-compose
+
+    - name: Pull images and restart containers
+      run: |
+        docker-compose pull
+        docker-compose up -d
